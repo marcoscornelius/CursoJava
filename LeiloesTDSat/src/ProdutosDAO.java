@@ -38,6 +38,7 @@ public class ProdutosDAO {
                     preparedStatement.setString(3, produto.getStatus());
 
                     preparedStatement.executeUpdate();
+                    JOptionPane.showMessageDialog(null,"Produto salvo com sucesso");
                 }
             } else {
                 System.err.println("Falha ao conectar ao banco de dados.");
