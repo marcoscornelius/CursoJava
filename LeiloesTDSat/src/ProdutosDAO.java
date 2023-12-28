@@ -14,7 +14,10 @@ import java.sql.DriverManager;
 import javax.swing.JOptionPane;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Time;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.List;
 
 
 public class ProdutosDAO {
@@ -51,7 +54,29 @@ public class ProdutosDAO {
         
     
     
-    public ArrayList<ProdutosDTO> listarProdutos(){
+    public ArrayList<ProdutosDTO> listarProdutos() throws SQLException{
+        conn = DriverManager.getConnection("jdbc:mysql://localhost/uc11?user=root&password=root");
+        try {
+        List<ProdutosDTO> listagem = new ArrayList<>();
+        PreparedStatement st = conn.prepareStatement("SELECT * from prdotuos");
+           
+        ResultSet rs = st.executeQuery();       
+            while (rs.next()) {
+                ProdutosDTO f = new ProdutosDTO();
+                f.setValor(rs.getInt("valor"));
+                f.setNome(rs.getString("nome"));                        
+                f.setStatus(rs.getString("status"));
+                 f.setId(rs.getInt("id"));
+            }            
+
+            if (listagem.isEmpty()) {
+            JOptionPane.showMessageDialog(null,"Sem produtos");
+        } 
+        } catch (SQLException ex) {
+          
+            System.out.println("Erro ao conectar: " + ex.getMessage());
+           
+        }
         
         return listagem;
     }
