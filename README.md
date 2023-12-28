@@ -1,0 +1,3 @@
+Nome do Projeto: CursoJava
+Projeto destinado ao curso técnico de desenvolvimento de sistemas...
+Exercitando a programação utilizando Java, Git, MySQL
