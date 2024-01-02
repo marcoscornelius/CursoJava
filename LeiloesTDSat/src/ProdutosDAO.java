@@ -99,6 +99,33 @@ public class ProdutosDAO {
                 System.out.println("Erro ao editar cliente: " + e.getMessage());
             }
    }
+   
+    public ArrayList<ProdutosDTO> listarProdutosVendidos() throws SQLException {
+          conn = DriverManager.getConnection("jdbc:mysql://localhost/uc11?user=root&password=root");
+        try {
+        List<ProdutosDTO> listagem = new ArrayList<>();
+        PreparedStatement st = conn.prepareStatement("SELECT * from prdotuos where status = vendido");
+           
+        ResultSet rs = st.executeQuery();       
+            while (rs.next()) {
+                ProdutosDTO f = new ProdutosDTO();
+                f.setValor(rs.getInt("valor"));
+                f.setNome(rs.getString("nome"));                        
+                f.setStatus(rs.getString("status"));
+                f.setId(rs.getInt("id"));
+            }            
+
+            if (listagem.isEmpty()) {
+            JOptionPane.showMessageDialog(null,"Sem produtos vendidos");
+        } 
+        } catch (SQLException ex) {
+          
+            System.out.println("Erro ao conectar: " + ex.getMessage());
+           
+        }
+        
+        return listagem;
+   }
         
 }
 
