@@ -15,6 +15,7 @@ import javax.swing.JOptionPane;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Time;
+import java.text.SimpleDateFormat;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
@@ -82,7 +83,22 @@ public class ProdutosDAO {
     }
     
     
-    
+   public void  venderProduto(int id){
+         String sql = "UPDATE produto SET status=? WHERE id = ?";
+            
+            try {               
+                PreparedStatement stmt = conn.prepareStatement(sql);
+                
+                //Setando os parâmetros
+                 stmt.setString(1, "vendido");
+                 stmt.setInt(2, id);           
+                //Executando a query
+                stmt.execute();
+                JOptionPane.showMessageDialog(null,"Cliente atualizado com sucesso.");
+            } catch (SQLException e) {
+                System.out.println("Erro ao editar cliente: " + e.getMessage());
+            }
+   }
         
 }
 
