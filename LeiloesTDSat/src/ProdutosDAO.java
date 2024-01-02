@@ -15,6 +15,7 @@ import javax.swing.JOptionPane;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Time;
+import java.text.SimpleDateFormat;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
@@ -82,7 +83,49 @@ public class ProdutosDAO {
     }
     
     
-    
+   public void  venderProduto(int id){
+         String sql = "UPDATE produto SET status=? WHERE id = ?";
+            
+            try {               
+                PreparedStatement stmt = conn.prepareStatement(sql);
+                
+                //Setando os parâmetros
+                 stmt.setString(1, "vendido");
+                 stmt.setInt(2, id);           
+                //Executando a query
+                stmt.execute();
+                JOptionPane.showMessageDialog(null,"Cliente atualizado com sucesso.");
+            } catch (SQLException e) {
+                System.out.println("Erro ao editar cliente: " + e.getMessage());
+            }
+   }
+   
+    public ArrayList<ProdutosDTO> listarProdutosVendidos() throws SQLException {
+          conn = DriverManager.getConnection("jdbc:mysql://localhost/uc11?user=root&password=root");
+        try {
+        List<ProdutosDTO> listagem = new ArrayList<>();
+        PreparedStatement st = conn.prepareStatement("SELECT * from prdotuos where status = vendido");
+           
+        ResultSet rs = st.executeQuery();       
+            while (rs.next()) {
+                ProdutosDTO f = new ProdutosDTO();
+                f.setValor(rs.getInt("valor"));
+                f.setNome(rs.getString("nome"));                        
+                f.setStatus(rs.getString("status"));
+                f.setId(rs.getInt("id"));
+            }            
+
+            if (listagem.isEmpty()) {
+            JOptionPane.showMessageDialog(null,"Sem produtos vendidos");
+        } 
+        } catch (SQLException ex) {
+          
+            System.out.println("Erro ao conectar: " + ex.getMessage());
+           
+        }
+        
+        return listagem;
+   }
         
 }
 
